@@ -1,13 +1,6 @@
-interface Payload {
-  orders: object
-}
+import { Order, Action } from '../store/interfaces/orders';
 
-interface Action {
-  type: string,
-  payload: Payload
-}
-
-const orders = (state: Array<Object> = [], action: Action) => {
+const orders = (state: Array<Order> = [], action: Action) => {
   switch (action.type) {
     case '@@ORDERS/ADD_ORDER': {
       return [

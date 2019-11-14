@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
-import reducers from './reducers';
-import data from './db/orders.json';
+import reducers from '../reducers';
+import data from '../db/orders.json';
 
 const store = createStore(
   reducers,

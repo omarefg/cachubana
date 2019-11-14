@@ -1,6 +1,4 @@
-# Frubana Frontend - test
-
-prueba para desarrollador frontend de frubana.
+# Cachubana
 
 ### Requisitos
 * nodejs
@@ -10,11 +8,11 @@ prueba para desarrollador frontend de frubana.
 * clonar el repositorio:
 
   ``` bash
-  $ git clone https://github.com/Frubana/bodega_cachubana.git
+  $ git clone https://github.com/omarefg/cachubana.git
   ```
 * instalar dependencias
   ``` bash
-  $ cd carpeta-del-proyecto
+  $ cd cachubana
   $ yarn install
   ```
 * iniciar el servidor

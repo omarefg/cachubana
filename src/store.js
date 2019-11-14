@@ -1,24 +1,12 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
-import data from './orders.json';
+import reducers from './reducers';
+import data from './db/orders.json';
 
-function orderReducer(state = [], action) {
-  switch (action.type) {
-    case '@@ORDERS/ADD_ORDER': {
-      return [
-        ...state,
-        action.payload.order,
-      ] 
-    }
-    default: return state;
-  }
-}
 const store = createStore(
-  combineReducers({
-    orders: orderReducer,
-  }),
+  reducers,
   applyMiddleware(logger),
-)
+);
 
 /* mock of realtime action */
 let timerId = null;
@@ -39,15 +27,14 @@ function startEvent(delay) {
     store.dispatch({
       type: '@@ORDERS/ADD_ORDER',
       payload: {
-        order: data[index]
-      }
+        orders: data[index],
+      },
     });
     if (index < (data.length - 1)) {
       index += 1;
       return startEvent(getRandom());
     }
-    return
-  }, delay)
+  }, delay);
 }
 
 startEvent(getRandom());

@@ -1,0 +1,4 @@
+node_modules
+serviceWorker.js
+src/index.js
+src/react-app-env.d.ts

@@ -10,7 +10,7 @@
     "react-dom": "^16.8.1",
     "react-redux": "^6.0.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "2.1.5",
+    "react-scripts": "^3.2.0",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6"
   },
@@ -30,14 +30,17 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@types/material-ui": "^0.21.7",
     "@types/react-redux": "^7.1.5",
     "@types/react-router-dom": "^5.1.2",
+    "@types/redux-logger": "^3.0.7",
     "@typescript-eslint/eslint-plugin": "^2.7.0",
     "@typescript-eslint/parser": "^2.7.0",
+    "eslint": "^6.6.0",
     "eslint-config-airbnb-typescript": "^6.3.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react": "^7.15.1",
     "eslint-plugin-react-hooks": "^1.7.0",
     "typescript": "^3.7.2"
   }

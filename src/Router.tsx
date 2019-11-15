@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Header from './components/Header';
-import App from './App';
+import Orders from './pages/Orders';
 
 
 const Router : React.FunctionComponent = () => (
@@ -10,7 +10,7 @@ const Router : React.FunctionComponent = () => (
     <Switch>
       <Route
         path="/"
-        component={App}
+        component={Orders}
         exact
       />
     </Switch>

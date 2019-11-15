@@ -11,6 +11,8 @@
             "tsx": true
         }
     },
-    // "parser": "@typescript-eslint/parser",
-    // "plugins": ["@typescript-eslint/eslint-plugin"]
+    "rules": {
+        "react/prop-types": 0,
+        "no-underscore-dangle": 0
+    }
 }

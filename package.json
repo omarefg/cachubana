@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.6.1",
     "@material-ui/icons": "^4.5.1",
+    "echarts-for-react": "^2.0.15-beta.1",
     "faker": "^4.1.0",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
@@ -36,12 +37,14 @@
     "@types/redux-logger": "^3.0.7",
     "@typescript-eslint/eslint-plugin": "^2.7.0",
     "@typescript-eslint/parser": "^2.7.0",
+    "echarts": "^4.4.0",
     "eslint": "^6.6.0",
     "eslint-config-airbnb-typescript": "^6.3.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.15.1",
     "eslint-plugin-react-hooks": "^1.7.0",
+    "prop-types": "^15.7.2",
     "typescript": "^3.7.2"
   }
 }

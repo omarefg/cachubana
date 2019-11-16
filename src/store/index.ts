@@ -2,14 +2,18 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import logger from 'redux-logger';
 import data from '../db/orders.json';
 import orders from './orders/reducers';
+import auth from './auth/reducers';
 import { ORDERS_ADD_ORDER, OrdersState } from './orders/types';
+import { AuthState } from './auth/types';
 
 export interface State {
   orders: OrdersState
+  auth: AuthState
 }
 
 const reducer = combineReducers({
   orders,
+  auth,
 });
 
 const store = createStore(

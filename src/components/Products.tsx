@@ -1,21 +1,20 @@
-import React, { FunctionComponent, Fragment } from 'react';
+import React, { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import {
   Button,
   Dialog,
-  ListItemText,
-  ListItem,
   List,
-  Divider,
   AppBar,
   Toolbar,
   IconButton,
   Typography,
-  Slide,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import { TransitionProps } from '@material-ui/core/transitions';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CancelIcon from '@material-ui/icons/Cancel';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import ProductsTransition from './ProductsTransition';
+import ProductListItem from './ProductListItem';
 import orderActions from '../store/orders/actions';
 import { OrdersState } from '../store/orders/types';
 import { State } from '../store';
@@ -29,64 +28,113 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     flex: 1,
   },
 }));
-
-const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
-
 interface ProductsProps {
   orders: OrdersState,
-  setSelectedOrder: Function
+  setSelectedOrder: Function,
+  setProductIsFinished: Function,
+  saveFinishedProducts: Function
 }
 
-const Products : FunctionComponent<ProductsProps> = (props) => {
+const Products: FunctionComponent<ProductsProps> = (props) => {
   const classes = useStyles();
-  const { orders } = props;
+  const {
+    orders, setSelectedOrder, setProductIsFinished, saveFinishedProducts,
+  } = props;
   const { selectedOrder } = orders;
+
+  const closeProductsHandler = () => setSelectedOrder(null);
+
+  const setProductIsFinishedHandler = (id: string) => () => setProductIsFinished(id);
+
+  const selectedProducts = selectedOrder
+    ? selectedOrder.products.filter((product) => product.finished)
+    : [];
+  const selectAllHandler = () => {
+    if (selectedOrder) {
+      if (selectedProducts.length) {
+        selectedProducts.forEach((product) => setProductIsFinished(product._id));
+        return;
+      }
+      selectedOrder.products.forEach((product) => setProductIsFinished(product._id));
+    }
+  };
+
+  const saveFinishedProductsHandler = () => saveFinishedProducts();
 
   return (
     <Dialog
       fullScreen
       open={Boolean(selectedOrder)}
-      TransitionComponent={Transition}
+      TransitionComponent={ProductsTransition}
     >
-      <AppBar className={classes.appBar}>
+      <AppBar
+        className={classes.appBar}
+        color="secondary"
+      >
         <Toolbar>
-          <IconButton edge="start" color="inherit" aria-label="close">
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="close"
+            onClick={closeProductsHandler}
+          >
             <CloseIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
             {`${selectedOrder && selectedOrder.user.name} | ${selectedOrder && selectedOrder.region_code}`}
           </Typography>
-          <Button autoFocus color="inherit">
+          <Button
+            autoFocus
+            color="inherit"
+            onClick={selectAllHandler}
+          >
+            {selectedProducts.length ? 'Desmarcar todo' : 'Marcar todo'}
+          </Button>
+          <Button
+            autoFocus
+            color="inherit"
+            onClick={saveFinishedProductsHandler}
+          >
               Guardar
           </Button>
         </Toolbar>
       </AppBar>
       <List>
-        {selectedOrder && selectedOrder.products.map((order) => (
-          <Fragment
-            key={order._id}
-          >
-            <ListItem button>
-              <ListItemText
-                primary={order.name}
-                secondary={(
-                  <>
-                    <p>{ `${order.quantity} unidades`}</p>
-                    <p>{`Precio ${order.price}`}</p>
-                    <p>{`Total ${order.total}`}</p>
-                  </>
-                )}
-              />
-            </ListItem>
-            <Divider />
-          </Fragment>
-        ))}
+        <ProductListItem
+          row={[
+            { cell: 'Producto', id: '0' },
+            { cell: 'Cantidad', id: '1' },
+            { cell: 'Precio', id: '2' },
+            { cell: 'Total', id: '3' },
+            { cell: 'Alistado', id: '4' },
+          ]}
+        />
+        {selectedOrder && selectedOrder.products.map((order) => {
+          const {
+            _id, quantity, price, total, name, finished,
+          } = order;
+          const icon = finished ? <CheckCircleIcon color="primary" /> : <CancelIcon color="error" />;
+          return (
+            <ProductListItem
+              key={_id}
+              row={[
+                { cell: name, id: '0' },
+                { cell: quantity, id: '1' },
+                { cell: price, id: '2' },
+                { cell: total, id: '3' },
+                { cell: icon, id: '4' },
+              ]}
+              isButton
+              onClick={setProductIsFinishedHandler(_id)}
+            />
+          );
+        })}
       </List>
     </Dialog>
   );
 };
 
-const { setSelectedOrder } = orderActions;
+const { setSelectedOrder, setProductIsFinished, saveFinishedProducts } = orderActions;
 
 const mapStateToProps = (state : State) => (
   {
@@ -96,6 +144,8 @@ const mapStateToProps = (state : State) => (
 
 const mapDistpatchToProps = {
   setSelectedOrder,
+  setProductIsFinished,
+  saveFinishedProducts,
 };
 
 export default connect(mapStateToProps, mapDistpatchToProps)(Products);

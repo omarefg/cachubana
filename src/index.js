@@ -2,14 +2,18 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import Router from './Router';
+import { MuiThemeProvider } from '@material-ui/core/styles'
 import store from './store';
+import theme from './theme';
 import * as serviceWorker from './serviceWorker';
 
 import './index.css';
 
 render(
   <Provider store={store}>
-    <Router />
+    <MuiThemeProvider theme={theme}>
+      <Router />
+    </MuiThemeProvider>
   </Provider>,
   document.getElementById('root'),
 );

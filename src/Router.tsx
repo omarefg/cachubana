@@ -1,17 +1,29 @@
-import * as React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import React, { FunctionComponent } from 'react';
+import {
+  BrowserRouter, Switch, Route, Redirect,
+} from 'react-router-dom';
 import Header from './components/Header';
 import Orders from './pages/Orders';
+import Dashboard from './pages/Dashboard';
+
+interface RouterProps { }
 
 
-const Router : React.FunctionComponent = () => (
+const Router: FunctionComponent<RouterProps> = () => (
   <BrowserRouter>
     <Header />
     <Switch>
       <Route
-        path="/"
+        path="/ordenes"
         component={Orders}
-        exact
+      />
+      <Route
+        path="/tablero"
+        component={Dashboard}
+      />
+      <Redirect
+        from="/"
+        to="/ordenes"
       />
     </Switch>
   </BrowserRouter>

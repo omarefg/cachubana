@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import Container from '@material-ui/core/Container';
 import Table from '../components/Table';
 import Products from '../components/Products';
-import { Order } from '../store/orders/types';
+import { Order, Product } from '../store/orders/types';
 
 interface HomeProps { }
 
@@ -20,8 +20,17 @@ const Home : FunctionComponent<HomeProps> = () => (
           cell: (row: Order) => row.user.name,
         },
         {
-          header: 'Espacio',
+          header: 'Bloque',
           accessor: 'slot',
+        },
+        {
+          header: 'Completado',
+          accessor: '_id',
+          cell: (row: Order) => {
+            const finishedProducts = row.products
+              .filter((product: Product) => product.finished).length;
+            return `${Math.round((100 / row.products.length) * finishedProducts)}%`;
+          },
         },
       ]}
     />

@@ -1,7 +1,13 @@
 import React, { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import {
-  Paper, Table as MuiTable, TableHead, TableBody, TableRow, TableCell, Button,
+  Paper,
+  Table as MuiTable,
+  TableHead, TableBody,
+  TableRow,
+  TableCell,
+  Button,
+  TableSortLabel,
 } from '@material-ui/core';
 import { FormatListNumberedRounded as ProductsIcon } from '@material-ui/icons';
 import orderActions from '../store/orders/actions';
@@ -19,24 +25,41 @@ interface Column {
 interface TableProps {
   orders: OrdersState,
   columns: Array<Column>,
-  setSelectedOrder: Function
+  setSelectedOrder: Function,
 }
 
 const Table : FunctionComponent<TableProps> = (props) => {
-  const classes = useStyles();
-  const { orders, columns, setSelectedOrder } = props;
+  const { root, table } = useStyles();
+  const {
+    orders, columns, setSelectedOrder,
+  } = props;
   const { orders: orderRows } = orders;
 
-  const setSelectedOrderHandler = (row: Order) => () => setSelectedOrder(row);
+  const setSelectedOrderHandler = (row: Order) => () => {
+    setSelectedOrder(row);
+  };
 
   return (
-    <Paper className={classes.root}>
-      <MuiTable className={classes.table} aria-label="simple table">
+    <Paper className={root}>
+      <MuiTable className={table} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell>Productos</TableCell>
             {columns.map(({ header, accessor }) => (
-              <TableCell key={accessor}>{header}</TableCell>
+              <TableCell key={accessor}>
+                <TableSortLabel
+                  // active={orderBy === headCell.id}
+                  direction="asc"
+                  // onClick={createSortHandler(headCell.id)}
+                >
+                  {header}
+                  {/* {orderBy === headCell.id ? (
+                    <span className={classes.visuallyHidden}>
+                      {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                    </span>
+                  ) : null} */}
+                </TableSortLabel>
+              </TableCell>
             ))}
           </TableRow>
         </TableHead>
@@ -48,7 +71,7 @@ const Table : FunctionComponent<TableProps> = (props) => {
                 scope="row"
               >
                 <Button
-                  color="primary"
+                  color="secondary"
                   variant="contained"
                   onClick={setSelectedOrderHandler(row)}
                 >

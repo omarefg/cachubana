@@ -1,94 +1,122 @@
-import React, { FunctionComponent } from 'react';
-import { connect } from 'react-redux';
-import {
-  Paper,
-  Table as MuiTable,
-  TableHead, TableBody,
-  TableRow,
-  TableCell,
-  Button,
-  TableSortLabel,
-} from '@material-ui/core';
-import { FormatListNumberedRounded as ProductsIcon } from '@material-ui/icons';
-import orderActions from '../store/orders/actions';
-import { Order, OrdersState } from '../store/orders/types';
-import { State } from '../store';
+import React, { FunctionComponent, ChangeEvent as ReactChangeEvent } from 'react';
+import Paper from '@material-ui/core/Paper';
+import MuiTable from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
+import TableBody from '@material-ui/core/TableBody';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
+import TextField from '@material-ui/core/TextField';
+import { Order } from '../store/orders/types';
 
 import useStyles from '../styles/components/Table';
 
-interface Column {
+export interface Column {
   header: string,
   accessor: keyof Order,
-  cell?: Function
+  cell?: Function,
+  filter?: Function,
+  noFilter?: boolean,
+  isHide?: boolean,
+  noSort?: boolean
+}
+
+type OrderDirection = 'asc' | 'desc';
+
+export interface Sort {
+  orderBy: string | keyof Order,
+  direction: OrderDirection
 }
 
 interface TableProps {
-  orders: OrdersState,
-  columns: Array<Column>,
-  setSelectedOrder: Function,
+  columns: Column[],
+  data: Order[],
+  defaultFilterMethod: Function,
+  sort: Sort,
+  sortingMethod: Function
 }
 
-const Table : FunctionComponent<TableProps> = (props) => {
-  const { root, table } = useStyles();
+const Table: FunctionComponent<TableProps> = (props) => {
   const {
-    orders, columns, setSelectedOrder,
+    root, table, filterRoot, hideSort,
+  } = useStyles();
+  const {
+    data,
+    columns,
+    defaultFilterMethod,
+    sort,
+    sortingMethod,
   } = props;
-  const { orders: orderRows } = orders;
 
-  const setSelectedOrderHandler = (row: Order) => () => {
-    setSelectedOrder(row);
-  };
+  const filterMethod = (
+    column: string,
+  ) => (
+    event: ReactChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => defaultFilterMethod(event, column);
+
+  const sortingMethodHandler = (column: string) => () => sortingMethod(column);
 
   return (
     <Paper className={root}>
       <MuiTable className={table} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Productos</TableCell>
-            {columns.map(({ header, accessor }) => (
-              <TableCell key={accessor}>
-                <TableSortLabel
-                  // active={orderBy === headCell.id}
-                  direction="asc"
-                  // onClick={createSortHandler(headCell.id)}
-                >
-                  {header}
-                  {/* {orderBy === headCell.id ? (
-                    <span className={classes.visuallyHidden}>
-                      {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                    </span>
-                  ) : null} */}
-                </TableSortLabel>
-              </TableCell>
-            ))}
+            {columns.map(({
+              header, accessor, isHide, noSort,
+            }) => {
+              if (isHide) return null;
+
+              return (
+                <TableCell key={accessor}>
+                  <TableSortLabel
+                    active={sort.orderBy === accessor}
+                    direction={sort.direction}
+                    onClick={noSort ? undefined : sortingMethodHandler(accessor)}
+                    hideSortIcon={noSort}
+                    classes={{ root: noSort ? hideSort : '' }}
+                  >
+                    {header}
+                  </TableSortLabel>
+                </TableCell>
+              );
+            })}
+          </TableRow>
+          <TableRow>
+            {columns.map((col) => {
+              const {
+                filter, accessor, noFilter, isHide, header,
+              } = col;
+              if (isHide) return null;
+
+              return (
+                <TableCell key={accessor}>
+                  {filter && !noFilter && filter(col)}
+                  {!filter && !noFilter && (
+                    <TextField
+                      placeholder={header}
+                      classes={{ root: filterRoot }}
+                      onChange={filterMethod(accessor)}
+                    />
+                  )}
+                </TableCell>
+              );
+            })}
           </TableRow>
         </TableHead>
         <TableBody>
-          {orderRows.map((row) => (
+          {data.map((row) => (
             <TableRow key={row._id}>
-              <TableCell
-                component="th"
-                scope="row"
-              >
-                <Button
-                  color="secondary"
-                  variant="contained"
-                  onClick={setSelectedOrderHandler(row)}
-                >
-                  <ProductsIcon
-                    color="inherit"
-                  />
-                </Button>
-              </TableCell>
-              {columns.map((col) => {
-                if (col.cell) {
+              {columns.map(({ cell, accessor, isHide }) => {
+                if (isHide) return null;
+
+                if (cell) {
                   return (
                     <TableCell
                       component="th"
                       scope="row"
-                      key={col.accessor}
+                      key={accessor}
                     >
-                      {col.cell(row)}
+                      {cell(row)}
                     </TableCell>
                   );
                 }
@@ -96,9 +124,9 @@ const Table : FunctionComponent<TableProps> = (props) => {
                   <TableCell
                     component="th"
                     scope="row"
-                    key={col.accessor}
+                    key={accessor}
                   >
-                    {row[col.accessor]}
+                    {row[accessor]}
                   </TableCell>
                 );
               })}
@@ -110,16 +138,4 @@ const Table : FunctionComponent<TableProps> = (props) => {
   );
 };
 
-const { setSelectedOrder } = orderActions;
-
-const mapStateToProps = (state : State) => (
-  {
-    orders: state.orders,
-  }
-);
-
-const mapDistpatchToProps = {
-  setSelectedOrder,
-};
-
-export default connect(mapStateToProps, mapDistpatchToProps)(Table);
+export default Table;

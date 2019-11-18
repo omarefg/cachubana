@@ -4,8 +4,9 @@ import { TransitionProps } from '@material-ui/core/transitions';
 
 interface ProductsTransitionProps { }
 
-const ProductsTransition:(
-  ForwardRefExoticComponent<ProductsTransitionProps>) = forwardRef<unknown, TransitionProps>(
+const SlideTransition:(
+  ForwardRefExoticComponent<ProductsTransitionProps>
+) = forwardRef<unknown, TransitionProps>(
   (props, ref) => {
     const {
       appear,
@@ -39,4 +40,4 @@ const ProductsTransition:(
   },
 );
 
-export default ProductsTransition;
+export default SlideTransition;

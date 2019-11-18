@@ -1,28 +1,39 @@
 import React, { FunctionComponent } from 'react';
 import Echart from 'echarts-for-react';
-import { Paper, Grid, Typography } from '@material-ui/core';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import { User, Product } from '../store/orders/types';
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
-  root: {
-    padding: theme.spacing(2),
-  },
-}));
+import useStyles from '../styles/components/Chart';
 
+export interface Formatter {
+  seriesType: string,
+  seriesIndex: number,
+  seriesName: string,
+  name: string,
+  dataIndex: number,
+  data: Object,
+  value: number | number[],
+  dimensionNames: string[],
+  dimensionIndex: number,
+  color: string,
+  percent: number,
+  marker: string
+}
 interface XAxis {
   type: string,
-  data?: Array<string | User | Array<Product>>
+  data?: string[] | User[] | Product[]
 }
 
 interface YAxis {
   type: string,
-  data?: Array<string | User | Array<Product>>
+  data?: string[] | User[] | Product[]
 }
 
 interface Serie {
-  stack: string,
-  data: Array<number>,
+  stack?: string,
+  data: number[],
   type: string,
   name: string
 }
@@ -38,22 +49,22 @@ interface Tooltip {
 }
 
 interface Legend {
-  data: Array<string>
+  data: string[]
 }
 
 interface Option {
   xAxis: XAxis,
   yAxis: YAxis,
-  series: Array<Serie>,
+  series: Serie[],
   tooltip: Tooltip,
   legend?: Legend,
-  color?: Array<string>
+  color?: string[]
 }
 
 export interface ChartProps {
   xs: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12,
   option: Option,
-  title: string
+  title?: string
 }
 
 const Chart: FunctionComponent<ChartProps> = (props) => {

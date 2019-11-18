@@ -25,6 +25,9 @@ export interface Order {
   _id: string
 }
 
+export type OrderAvailableKeys = 'region_code' | 'products' | 'routeId' | 'slot';
+export type OrderAvailableStringKeys = 'region_code' | 'routeId' | 'slot';
+export type OrderAvailableArrayKeys = 'products';
 interface AddOrder {
   type: typeof ORDERS_ADD_ORDER
   payload: Order

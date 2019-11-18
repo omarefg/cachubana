@@ -1,17 +1,8 @@
 import React, { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(() => createStyles({
-  anchor: {
-    textDecoration: 'none',
-    margin: '0 10px',
-  },
-  text: {
-    color: 'white',
-  },
-}));
+import useStyles from '../styles/components/HeaderLink';
 
 export interface HeaderLinkProps {
   to: string,

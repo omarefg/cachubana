@@ -1,16 +1,13 @@
 import React, { ChangeEvent as ReactChangeEvent } from 'react';
 import { connect } from 'react-redux';
-import {
-  AppBar,
-  Toolbar,
-  Switch,
-  FormGroup,
-  FormControlLabel,
-} from '@material-ui/core';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Switch from '@material-ui/core/Switch';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import HeaderLink from './HeaderLink';
 import { State } from '../store';
-
-import authActions from '../store/auth/actions';
+import actions from '../store/auth/actions';
 
 import useStyles from '../styles/components/Header';
 
@@ -44,7 +41,7 @@ const Header: React.FunctionComponent<HeaderProps> = (props) => {
           <div className={classes.root} />
           <HeaderLink
             to="/ordenes"
-            title="Ordenes"
+            title="Órdenes"
           />
           {isManager && (
             <HeaderLink
@@ -71,7 +68,7 @@ const Header: React.FunctionComponent<HeaderProps> = (props) => {
   );
 };
 
-const { setIsManager } = authActions;
+const { setIsManager } = actions;
 
 const mapStateToProps = (state: State) => ({
   isManager: state.auth.isManager,

@@ -1,27 +1,26 @@
 import React, {
-  FunctionComponent, ReactElement, MouseEvent as ReactMouseEvent,
+  FunctionComponent,
+  ReactElement,
+  MouseEvent as ReactMouseEvent,
 } from 'react';
-import {
-  ListItemText,
-  ListItem,
-  Container,
-  Grid,
-} from '@material-ui/core';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItem from '@material-ui/core/ListItem';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 
-const useStyles = makeStyles(() => createStyles({
-  item: {
-    width: '20%',
-  },
-}));
+import useStyles from '../styles/components/ProductListItem';
 
 interface ProductListItemRow {
   cell: string | ReactElement | number,
   id: string
 }
 
+interface LItemProps {
+  children: ReactElement
+}
+
 export interface ProductListItemProps {
-  row: Array<ProductListItemRow>,
+  row: ProductListItemRow[],
   isButton?: true,
   onClick?: (event: ReactMouseEvent<HTMLDivElement, MouseEvent>) => void
 }
@@ -29,12 +28,15 @@ export interface ProductListItemProps {
 const ProductListItem: FunctionComponent<ProductListItemProps> = (props) => {
   const { row, isButton, onClick } = props;
   const classes = useStyles();
-  interface LItemProps {
-    children: ReactElement
-  }
-  let LItem : (
-    FunctionComponent<LItemProps>
-  ) = ({ children }) => <ListItem divider>{children}</ListItem>;
+
+  let LItem : (FunctionComponent<LItemProps>) = ({ children }) => (
+    <ListItem
+      divider
+    >
+      {children}
+    </ListItem>
+  );
+
   if (isButton) {
     LItem = ({ children }) => (
       <ListItem
@@ -67,7 +69,6 @@ const ProductListItem: FunctionComponent<ProductListItemProps> = (props) => {
                     item: classes.item,
                   }}
                 >
-
                   {cell}
                 </Grid>
               ))}

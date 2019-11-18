@@ -1,35 +1,25 @@
 import React, { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
-import {
-  Button,
-  Dialog,
-  List,
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-} from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import List from '@material-ui/core/List';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import ProductsTransition from './ProductsTransition';
+import ProductsTransition from './SlideTransition';
 import ProductListItem from './ProductListItem';
-import orderActions from '../store/orders/actions';
-import { OrdersState } from '../store/orders/types';
 import { State } from '../store';
+import actions from '../store/orders/actions';
+import { Order } from '../store/orders/types';
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
-  appBar: {
-    position: 'relative',
-  },
-  title: {
-    marginLeft: theme.spacing(2),
-    flex: 1,
-  },
-}));
+import useStyles from '../styles/components/Products';
+
 interface ProductsProps {
-  orders: OrdersState,
+  selectedOrder: Order | null,
   setSelectedOrder: Function,
   setProductIsFinished: Function,
   saveFinishedProducts: Function
@@ -37,10 +27,13 @@ interface ProductsProps {
 
 const Products: FunctionComponent<ProductsProps> = (props) => {
   const classes = useStyles();
+
   const {
-    orders, setSelectedOrder, setProductIsFinished, saveFinishedProducts,
+    selectedOrder,
+    setSelectedOrder,
+    setProductIsFinished,
+    saveFinishedProducts,
   } = props;
-  const { selectedOrder } = orders;
 
   const closeProductsHandler = () => setSelectedOrder(null);
 
@@ -134,11 +127,11 @@ const Products: FunctionComponent<ProductsProps> = (props) => {
   );
 };
 
-const { setSelectedOrder, setProductIsFinished, saveFinishedProducts } = orderActions;
+const { setSelectedOrder, setProductIsFinished, saveFinishedProducts } = actions;
 
 const mapStateToProps = (state : State) => (
   {
-    orders: state.orders,
+    selectedOrder: state.orders.selectedOrder,
   }
 );
 

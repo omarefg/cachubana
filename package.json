@@ -2,7 +2,7 @@
   "name": "frontend-app",
   "version": "0.1.0",
   "private": true,
-  "homepage" : "http://omarefg.github.io/cachubana",
+  "homepage": "http://omarefg.github.io/cachubana",
   "dependencies": {
     "@material-ui/core": "^4.6.1",
     "@material-ui/icons": "^4.5.1",
@@ -47,6 +47,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.15.1",
     "eslint-plugin-react-hooks": "^1.7.0",
+    "gh-pages": "^2.1.1",
     "prop-types": "^15.7.2",
     "typescript": "^3.7.2"
   }

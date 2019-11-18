@@ -1,5 +1,9 @@
 # Cachubana
 
+### Demo
+
+Puedes acceder al demo [aca](https://frubanafrontend.omarefg.now.sh/)
+
 ### Requisitos
 * nodejs
 * yarn o npm
